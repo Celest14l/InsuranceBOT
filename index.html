@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InsureBot Quest 2025 - Dark Mode</title>
+    <title>InsureBot Quest 2025 - Veena AI</title>
     <style>
         /* --- Basic Setup & Fonts --- */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -12,7 +12,7 @@
             --primary-color: #6366f1; /* Indigo */
             --primary-color-darker: #4f46e5;
             --background-dark: #111827; /* Navy Blue/Almost Black */
-            --container-bg: rgba(23, 25, 35, 0.85); /* Slightly transparent dark */
+            --container-bg: rgba(17, 24, 39, 0.85); /* Darker, less transparent */
             --text-light: #e5e7eb; /* Light Gray */
             --text-dark: #9ca3af; /* Medium Gray for secondary text */
             --user-bubble-bg: var(--primary-color);
@@ -35,22 +35,62 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 1rem;
         }
         
         /* --- Main Container & Glassmorphism Effect --- */
-        .chat-container {
+        .main-container {
             width: 100%;
-            max-width: 600px;
+            max-width: 1000px; /* Increased width for new layout */
             height: 90vh;
             max-height: 800px;
             display: flex;
-            flex-direction: column;
             background: var(--container-bg);
-            backdrop-filter: blur(12px) saturate(180%);
+            backdrop-filter: blur(16px) saturate(180%);
             border-radius: 1.5rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.1);
             overflow: hidden;
+        }
+
+        /* --- Veena's Avatar Section (Visible on Desktop) --- */
+        .veena-container {
+            width: 40%;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.2);
+            padding: 2rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .veena-avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-color);
+        }
+        
+        .veena-container h2 {
+            color: var(--text-light);
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .veena-container p {
+            color: var(--text-dark);
+            text-align: center;
+            margin: 0;
+        }
+
+        /* --- Chat Container --- */
+        .chat-container {
+            width: 100%; /* Full width on mobile */
+            display: flex;
+            flex-direction: column;
         }
 
         /* --- Header --- */
@@ -64,40 +104,11 @@
             flex-shrink: 0;
         }
 
-        .chat-header h1 {
-            margin: 0;
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--text-light);
-        }
-        
-        .chat-header .agent-status p {
-            margin: 0;
-            text-align: right;
-            font-weight: 600;
-            color: var(--text-light);
-        }
-        
-        .chat-header .agent-status .status {
-            font-size: 0.8rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 0.25rem;
-            color: var(--text-dark);
-        }
-        
-        .status-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: #6b7280; /* Gray */
-        }
-        .status-indicator.speaking {
-            background-color: #4ade80; /* Light Green */
-            animation: pulse 1.5s infinite;
-        }
+        .chat-header h1 { margin: 0; font-size: 1.25rem; font-weight: 700; color: var(--text-light); }
+        .chat-header .agent-status p { margin: 0; text-align: right; font-weight: 600; color: var(--text-light); }
+        .chat-header .agent-status .status { font-size: 0.8rem; font-weight: 500; display: flex; align-items: center; justify-content: flex-end; gap: 0.25rem; color: var(--text-dark); }
+        .status-indicator { width: 8px; height: 8px; border-radius: 50%; background-color: #6b7280; }
+        .status-indicator.speaking { background-color: #4ade80; animation: pulse 1.5s infinite; }
 
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
@@ -106,172 +117,108 @@
         }
 
         /* --- Chat History --- */
-        .chat-history {
-            flex-grow: 1;
-            padding: 1.5rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .message {
-            display: flex;
-            align-items: flex-end;
-            gap: 0.75rem;
-            max-width: 80%;
-        }
-        
-        .message.user {
-            align-self: flex-end;
-            flex-direction: row-reverse;
-        }
-        
-        .message .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-            flex-shrink: 0;
-            background-color: #4b5563; /* Medium Gray */
-        }
-        
+        .chat-history { flex-grow: 1; padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }
+        .message { display: flex; align-items: flex-end; gap: 0.75rem; max-width: 80%; }
+        .message.user { align-self: flex-end; flex-direction: row-reverse; }
+        .message .avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-light); flex-shrink: 0; background-color: #4b5563; }
         .message.user .avatar { background-color: var(--user-bubble-bg); }
-        
-        .message .text-bubble {
-            padding: 0.75rem 1rem;
-            border-radius: 1.25rem;
-            color: var(--text-light);
-        }
-        
-        .message.user .text-bubble {
-            background-color: var(--user-bubble-bg);
-            border-bottom-right-radius: 0.25rem;
-        }
-        
-        .message.bot .text-bubble {
-            background-color: var(--bot-bubble-bg);
-            border-bottom-left-radius: 0.25rem;
-        }
-        
-        .latency {
-            font-size: 0.7rem;
-            color: #9ca3af; /* Lighter gray for readability */
-            margin-top: 0.5rem;
-            text-align: right;
-        }
-
-        .welcome-message {
-            text-align: center;
-            margin: auto;
-            color: var(--text-dark);
-        }
+        .message .text-bubble { padding: 0.75rem 1rem; border-radius: 1.25rem; color: var(--text-light); }
+        .message.user .text-bubble { background-color: var(--user-bubble-bg); border-bottom-right-radius: 0.25rem; }
+        .message.bot .text-bubble { background-color: var(--bot-bubble-bg); border-bottom-left-radius: 0.25rem; }
+        .latency { font-size: 0.7rem; color: #9ca3af; margin-top: 0.5rem; text-align: right; }
+        .welcome-message { text-align: center; margin: auto; color: var(--text-dark); }
         .welcome-message .avatar { margin: 0 auto 1rem; background-color: var(--bot-bubble-bg); }
 
-
         /* --- Footer & Controls --- */
-        .chat-footer {
-            padding: 1rem;
-            background: rgba(30, 41, 59, 0.5);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-            flex-shrink: 0;
-        }
-        
-        .status-message {
-            height: 24px;
-            margin-bottom: 1rem;
-            color: var(--text-dark);
+        .chat-footer { padding: 1rem; background: rgba(30, 41, 59, 0.5); border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center; flex-shrink: 0; }
+        .status-message { height: 24px; margin-bottom: 1rem; color: var(--text-dark); display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+        .status-message.error { color: #f87171; }
+        .mic-button { width: 80px; height: 80px; border-radius: 50%; border: none; cursor: pointer; background-color: var(--primary-color); color: white; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); transition: all 0.3s ease; }
+        .mic-button:hover { background-color: var(--primary-color-darker); transform: translateY(-2px); }
+        .mic-button.recording { background-color: #ef4444; transform: scale(1.1); }
+        .mic-button.processing { background-color: #4b5563; cursor: not-allowed; }
+        .loader { width: 24px; height: 24px; border: 3px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* --- Branding Watermark --- */
+        .branding-watermark {
+            position: fixed;
+            bottom: 15px;
+            right: 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            z-index: 1000;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 0.5rem;
         }
-        
-        .status-message.error { color: #f87171; } /* Lighter Red for dark mode */
 
-        .mic-button {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            background-color: var(--primary-color);
-            color: white;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
-        }
-        
-        .mic-button:hover {
-            background-color: var(--primary-color-darker);
-            transform: translateY(-2px);
-        }
-        
-        .mic-button.recording {
-            background-color: #ef4444; /* Red */
-            transform: scale(1.1);
-        }
-        
-        .mic-button.processing {
-            background-color: #4b5563; /* Gray */
-            cursor: not-allowed;
-        }
-        
-        .loader {
-            width: 24px;
-            height: 24px;
-            border: 3px solid rgba(255,255,255,0.2);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        /* --- Responsive Adjustments --- */
+        @media (min-width: 1024px) {
+            .veena-container {
+                display: flex;
+            }
+            .chat-container {
+                width: 60%;
+            }
+            .welcome-message {
+                display: none; /* Hide mobile welcome message on desktop */
+            }
         }
 
     </style>
 </head>
 <body>
 
-    <div class="chat-container">
-        <header class="chat-header">
-            <div>
-                <h1>InsureBot Quest 2025</h1>
-                <p style="font-size: 0.9rem; color: var(--primary-color); font-weight: 600;">Powered by ValuEnable</p>
-            </div>
-            <div class="agent-status">
-                <p>Your Agent: Veena</p>
-                <div class="status">
-                    <span id="status-text">Ready</span>
-                    <div id="status-indicator" class="status-indicator"></div>
-                </div>
-            </div>
-        </header>
+    <div class="main-container">
+        <div class="veena-container">
+            <img src="https://imgs.search.brave.com/UxPpgEa9s17doWPH__HjEkTy20ovHsBNFtNKOUxqadI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMtd2l4bXAtZWQz/MGE4NmI4YzRjYTg4/Nzc3MzU5NGMyLndp/eG1wLmNvbS9mL2Ey/MWNmZGMyLTFjMTct/NDg4Ny04YmMwLTg4/ZGU1ODljMTg1OS9k/aGgzeXZpLWM3ZDBi/YjViLWEyZTgtNDdh/MS1iODhjLWY4ZWI4/ODIzYzA3Yi5qcGc_/dG9rZW49ZXlKMGVY/QWlPaUpLVjFRaUxD/SmhiR2NpT2lKSVV6/STFOaUo5LmV5Snpk/V0lpT2lKMWNtNDZZ/WEJ3T2pkbE1HUXhP/RGc1T0RJeU5qUXpO/ek5oTldZd1pEUXhO/V1ZoTUdReU5tVXdJ/aXdpYVhOeklqb2lk/WEp1T21Gd2NEbzNa/VEJrTVRnNE9UZ3lN/alkwTXpjellUVm1N/R1EwTVRWbFlUQmtN/alpsTUNJc0ltOWlh/aUk2VzF0N0luQmhk/R2dpT2lKY0wyWmNM/MkV5TVdObVpHTXlM/VEZqTVRjdE5EZzRO/eTA0WW1Nd0xUZzRa/R1UxT0Rsak1UZzFP/Vnd2Wkdob00zbDJh/UzFqTjJRd1ltSTFZ/aTFoTW1VNExUUTNZ/VEV0WWpnNFl5MW1P/R1ZpT0RneU0yTXdO/Mkl1YW5CbkluMWRY/U3dpWVhWa0lqcGJJ/blZ5YmpwelpYSjJh/V05sT21acGJHVXVa/RzkzYm14dllXUWlY/WDAuM3pYYi1wWFlS/dXU1bTk1VV9GUUot/T040Wm1ncC12U0J5/eDJZS01STDJjcw" alt="Veena AI Persona" class="veena-avatar">
+            <h2>Veena</h2>
+            <p>Your AI Insurance Agent</p>
+        </div>
 
-        <main class="chat-history" id="chat-history">
-            <!-- Messages will be injected here by JavaScript -->
-            <div class="welcome-message">
-                <div class="avatar">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect x="4" y="12" width="16" height="8" rx="2"/><path d="M2 12h20"/><path d="M17.5 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9z"/></svg>
+        <div class="chat-container">
+            <header class="chat-header">
+                <div>
+                    <h1>InsureBot Quest 2025</h1>
+                    <p style="font-size: 0.8rem; color: var(--text-dark); font-weight: 500; margin: 4px 0;">A submission by The LoneWolf</p>
+                    <p style="font-size: 0.9rem; color: var(--primary-color); font-weight: 600;">Powered by ValuEnable</p>
                 </div>
-                <p style="font-weight: 600; color: var(--text-light);">Hello! I'm Veena from ValuEnable.</p>
-                <p>Click the microphone below to ask about your policy.</p>
-            </div>
-        </main>
+                <div class="agent-status">
+                    <p>Agent Status</p>
+                    <div class="status">
+                        <span id="status-text">Ready</span>
+                        <div id="status-indicator" class="status-indicator"></div>
+                    </div>
+                </div>
+            </header>
 
-        <footer class="chat-footer">
-            <div class="status-message" id="status-message">Click the microphone to start the conversation.</div>
-            <button class="mic-button" id="mic-button">
-                <!-- Icon will be injected here by JavaScript -->
-            </button>
-        </footer>
+            <main class="chat-history" id="chat-history">
+                <!-- Messages will be injected here by JavaScript -->
+                <div class="welcome-message">
+                    <div class="avatar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect x="4" y="12" width="16" height="8" rx="2"/><path d="M2 12h20"/><path d="M17.5 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9z"/></svg>
+                    </div>
+                    <p style="font-weight: 600; color: var(--text-light);">Hello! I'm Veena from ValuEnable.</p>
+                    <p>Click the microphone below to ask about your policy.</p>
+                </div>
+            </main>
+
+            <footer class="chat-footer">
+                <div class="status-message" id="status-message">Click the microphone to start the conversation.</div>
+                <button class="mic-button" id="mic-button">
+                    <!-- Icon will be injected here by JavaScript -->
+                </button>
+            </footer>
+        </div>
+    </div>
+    
+    <div class="branding-watermark">
+        <span>🐺</span>
+        <span>The LoneWolf</span>
     </div>
     
     <audio id="audio-player" style="display: none;"></audio>
@@ -294,8 +241,8 @@
 
         // --- SVG Icons ---
         const icons = {
-            mic: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>`,
-            micOff: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>`,
+            mic: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>`,
+            micOff: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>`,
             loader: `<div class="loader"></div>`
         };
         
@@ -370,8 +317,8 @@
             messageDiv.className = `message ${type}`;
             
             const avatarIcon = type === 'user' 
-                ? `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`
-                : `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect x="4" y="12" width="16" height="8" rx="2"/><path d="M2 12h20"/><path d="M17.5 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9z"/></svg>`;
+                ? `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`
+                : `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect x="4" y="12" width="16" height="8" rx="2"/><path d="M2 12h20"/><path d="M17.5 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9z"/></svg>`;
 
             let latencyHTML = '';
             if (latency !== null) {
