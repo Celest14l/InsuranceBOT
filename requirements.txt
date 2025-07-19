@@ -1,0 +1,14 @@
+langchain
+langchain-groq
+gtts
+numpy
+flask
+flask_socketio
+flask_cors
+faiss-cpu
+sentence-transformers
+python-dotenv
+pydub
+pypdf2
+pickle5
+speechrecognition
