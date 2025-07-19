@@ -16,7 +16,7 @@ _Submission by The LoneWolf_
 
 <div align="center">
 
-**[➡️ View Repo](https://github.com/Celest14l/InsuranceBOT/tree/main)**
+**[➡️ View Repo](https://github.com/Celest1al/InsuranceBOT/tree/main)** &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; **[📺 Watch the Demo](https://youtu.be/N-IUWELuUEw)**
 
 </div>
 
